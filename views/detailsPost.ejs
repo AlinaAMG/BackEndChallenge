@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("partials/head") %>
+  <body>
+    <h2 class="title">Welcome to facebook</h2>
+    <div class="container-homepage">
+    <a class="homepage" href="/feed">Back to homepage</a>
+</div>
+
+    <% if (messageSuccess) { %>
+    <div class="alert alert-success"><%= messageSuccess %></div>
+    <% } %>
+    <% if (messageError) { %>
+        <div class="alert alert-error"><%= messageError %></div>
+        <% } %>
+
+    <div class="post">
+      <div class="post1">
+        <h1><%= feed.name %></h1>
+        <p><%= feed.message %></p>
+      </div>
+
+      <div class="post2">
+        <p><%= new Date(feed.date).toLocaleDateString('en-GB') %></p>
+      </div>
+    </div>
+
+    <div class="links">
+      <button class="btn1"><a href="/feed/delete/<%= feed._id%>">Delete</a></button>
+      <button class="btn2"><a href="/feed/edit/<%= feed._id %>">Edit post</a></button>
+    </div>
+  </body>
+</html>

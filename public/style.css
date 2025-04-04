@@ -1,0 +1,163 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+body{
+    width:80%;
+    margin:50px auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.title{
+    text-align:right;
+    font-size:26px;
+    margin-bottom:40px;
+}
+.post-form{
+    display:flex;
+    flex-direction: column;
+    width:70%;
+   
+    margin-top:20px;
+
+
+}
+.container-form{
+    background-color: rgb(226, 244, 249);
+    width:70%;
+    height:30wh;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius:10px;
+    box-shadow: 4px 4px 8px rgba(0,0,0,0.7);
+    margin-bottom:70px;
+}
+
+.post-form input,
+.post-form textarea{
+   margin:20px 0 10px 0;
+   padding:10px;
+}
+.post-form input::placeholder,
+.post-form textarea::placeholder{
+   font-weight:600;
+   color:#333;
+}
+.post-form button{
+    background-color: rgb(19, 189, 240);
+    width:40%;
+    padding:5px;
+    color:#fff;
+    font-size:18px;
+    border:none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin:20px 0 20px 0;
+}
+.post{
+    display:flex;
+    align-items: center;
+   margin-bottom:50px;
+   
+    
+}
+li{
+    list-style: none;
+}
+.post p{
+    margin-top:20px;
+}
+.post1{
+    width:60%;
+}
+.post2{
+    width:30%;
+    text-align:right
+}
+.post2 a{
+    color:blue;
+}
+.homepage{
+    color:blue;
+    margin-bottom:50px;
+    text-align: right;
+    font-size:20px;
+}
+.container-homepage{
+    margin-bottom:30px;
+}
+.links{
+    display:flex;
+    justify-content: right;
+    margin-right:30px;
+}
+.links button{
+    margin-left:20px;
+    font-size:20px;
+    padding:10px 10px 10px 10px;
+    
+}
+.links button a  {
+    text-decoration: none;
+    color:#fff;
+}
+.btn1{
+   background-color:rgb(255, 20, 20);
+    border-radius: 10px;
+    border:none;
+    box-shadow: 2px 5px 5px rgba(0,0,0,0.8);
+    border-bottom:4px solid black;
+    border-right:4px solid black;
+}
+.btn1:hover{
+    background-color: rgb(244, 99, 99);
+    transform: scale(1.05);
+}
+.btn2{
+    background-color:rgb(35, 54, 255);
+    border-radius: 10px;
+    border:none;
+    box-shadow: 2px 5px 5px rgba(0,0,0,0.8);
+    border-bottom:4px solid black;
+    border-right:4px solid black;
+}
+.btn2:hover{
+    background-color: rgb(89, 102, 245);
+    transform: scale(1.05);
+}
+.edit-post{
+    margin-bottom:30px;
+}
+.edit-button{
+    display: flex;
+   justify-content: end;
+    margin-top:40px;
+}
+.edit-button button{
+    background-color: blue;
+    border-bottom:5px solid black;
+    border-right:5px solid black;
+
+
+}
+.alert-success {
+    color:green;
+    margin-bottom:40px;
+    font-size:20px;
+}
+.message-error,
+.messageErr{
+    color:red;
+    font-size:20px;
+    margin-top:20px;
+    margin-bottom:30px;
+}
+.no-feeds {
+    font-size:20px;
+    font-weight: 600;
+    color:#666;
+}

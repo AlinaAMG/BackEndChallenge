@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("partials/head") %>
+  <body>
+    <h2 class="title">Welcome to Facebook</h2>
+
+    <% if (messageDelete) { %>
+    <div class="alert alert-success"><%= messageDelete %></div>
+    <% } %> <% if(messageSuccess) {%>
+    <div class="alert alert-success"><%= messageSuccess %></div>
+    <% }%>
+
+    <div class="container-form">
+      <form class="post-form" action="/feed" method="POST">
+        <h3>Add a post</h3>
+
+        <input type="text" placeholder="Name" name="name" required />
+        <textarea
+          name="message"
+          placeholder="Message"
+          required
+          col="6"
+          row="8"
+        ></textarea>
+
+        <button type="submit">Add Message</button>
+      </form>
+    </div>
+    <p><%= message %></p>
+
+    <%if(messageErr){ %>
+       <p class="messageErr"><%= messageErr%></p>
+    <% } %>
+
+    <ul>
+      <%if(feeds.length >0) {%> <% feeds.forEach(feed => { %>
+      <li>
+        <div class="post">
+          <div class="post1">
+            <h1><%= feed.name %></h1>
+            <p><%= feed.message.substring(0,100) %></p>
+          </div>
+          <div class="post2">
+            <a href="/feed/<%= feed._id %>">See More</a>
+            <p><%= new Date(feed.date).toLocaleDateString('en-GB') %></p>
+          </div>
+        </div>
+      </li>
+      <% }) %> <% } else {%>
+      <p class="no-feeds">
+        There are no feeds to display.Add a new article please.
+      </p>
+      <%}%>
+    </ul>
+  </body>
+</html>

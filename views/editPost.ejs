@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("partials/head") %>
+  <body>
+    <h3 class="edit-post">Edit a Post</h3>
+    <div class="container-form">
+    <form  class="post-form" action="/feed/<%= feed._id%>" method="POST">
+      <input type="text" name="name" value="<%= feed.name %>" required />
+
+      <textarea name="message" rows="8">"<%= feed.message %>"</textarea>
+      <div class="edit-button"required >
+      <button type="submit">Submit</button>
+     
+     
+    </div>
+    </div>
+    <a class="homepage" href="/feed">Back to homepage</a>
+    <% if(messageError){ %>
+        <p class="message-error"><%= messageError %></p>
+   <% } %>
+  
+
+    
+    
+    </form>
+  </body>
+</html>
