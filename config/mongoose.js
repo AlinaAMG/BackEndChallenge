@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 mongoose
-  .connect("mongodb+srv://alina:alina82@cluster-test.ibpnh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-test")
+  .connect(process.env.MONGO_URL)
   .then(() => {
     console.log('DB is connected');
   })

@@ -1,7 +1,6 @@
 const feedModel = require('../models/feedModel');
 
 const renderHomePage = (req, res) => {
-
   const date = new Date();
   const day = ('0' + date.getDate()).slice(-2);
   const month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -13,8 +12,7 @@ const renderHomePage = (req, res) => {
   return feedModel
     .find()
     .sort({ date: -1 })
-      .then((feeds) => {
-        
+    .then((feeds) => {
       // display the delete and success messages on the homepage
       const messageDelete = req.query.messageDelete || '';
       const messageSuccess = req.query.messageSuccess || '';
@@ -22,19 +20,17 @@ const renderHomePage = (req, res) => {
       res.render('homepage', {
         title: 'Home Page',
         feeds: feeds,
-        messageError: '',
         message: '',
         messageDelete: messageDelete,
         messageSuccess: messageSuccess,
         formattedDate: formattedDate,
         messageErr: '',
-        
       });
     })
     .catch((err) => {
       console.log(err);
       res
-        .status(500)
+        .status(404)
         .render('404', { messageError: 'No posts founded', title: '' });
     });
 };
@@ -49,21 +45,14 @@ const addPost = (req, res) => {
       .sort({ date: -1 })
       .then((feeds) => {
         return res.render('homepage', {
-          name: '',
           message: '',
-          title: '',
           messageError: 'All fields are required!Please fill in!',
-          messageSuccess: '',
-          messageDelete: '',
-          feeds: feeds,
-          messageErr: '',
-      
         });
       })
       .catch((err) => {
         console.log(err);
         res
-          .status(500)
+          .status(404)
           .render('404', { messageError: 'Unable to fetch posts', title: '' });
       });
   }
@@ -76,21 +65,12 @@ const addPost = (req, res) => {
         return res.render('homepage', {
           messageErr:
             'The name field have to be no longer then 15 characters and the message field no longer then 40 characters!',
-          msg: '',
-          article: '',
-          title: '',
-          messageError: '',
-          messageSuccess: '',
-          messageDelete: '',
-          message: '',
-          feeds: feeds,
-        
         });
       })
       .catch((err) => {
         console.log(err);
         res
-          .status(500)
+          .status(404)
           .render('404', { messageError: 'Unable to fetch posts', title: '' });
       });
   } else {
@@ -109,6 +89,7 @@ const addPost = (req, res) => {
       .then(() => res.redirect(`/feed?messageSuccess=Post successfully added`))
       .catch((err) => {
         console.log(err);
+
         // Handle errors during save
         return feedModel
           .find()
@@ -116,25 +97,14 @@ const addPost = (req, res) => {
           .then((feeds) => {
             res.render('homepage', {
               msgError: 'An error occurred, please try again.',
-              name: '',
-              message: '',
-              title: '',
-              messageError: '',
-              messageSuccess: '',
-              messageDelete: '',
-              feeds: feeds,
-              messageErr: '',
-             
             });
           })
           .catch((err) => {
             console.log(err);
-            res
-              .status(500)
-              .render('404', {
-                messageError: 'Unable to fetch posts',
-                title: '',
-              });
+            res.status(403).render('404', {
+              messageError: 'Unable to fetch posts',
+              title: '',
+            });
           });
       });
   }
@@ -152,22 +122,16 @@ const renderDetailsPost = (req, res) => {
 
       res.render('detailsPost', {
         title: 'details Post',
-        message: '',
-        messageErr: '',
         feed: feed,
         messageError: '',
         messageSuccess: messageSuccess,
-        messageDelete: '',
-          feeds: '',
-        messageE:"",
       });
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).render('404', {
-        messageError: 'Error retrieving post Details',
-        title: '',
-        messageE:"",
+      res.status(400).render('404', {
+      messageError: 'Error retrieving Post Details',
+
       });
     });
 };
@@ -182,19 +146,13 @@ const editPostPage = (req, res) => {
       if (!feedInfo) {
         return res.render('404', {
           messageError: 'Posts not found',
-          title: '',
+         
         });
       }
       return res.render('editPost', {
-        message: '',
-        feed: feedInfo,
+       feed: feedInfo,
         title: '',
         messageError: '',
-        messageSuccess: '',
-        messageDelete: '',
-        feeds: '',
-        messageErr: '',
-        messageE:"",
       });
     })
     .catch((err) => {
@@ -203,93 +161,91 @@ const editPostPage = (req, res) => {
     });
 };
 
-
-
 const editPostForm = (req, res) => {
-    const feedId = req.params.feedId;
-    console.log(feedId);
+  const feedId = req.params.feedId;
+  console.log(feedId);
 
-    // Find the post by ID
-    feedModel
-        .findById(feedId)
-        .then((post) => {
-            if (!post) {
-                return res.render('404', { messageError: 'Post not found', title: '' });
-            }
+  // Find the post by ID
+  feedModel
+    .findById(feedId)
+    .then((post) => {
+      if (!post) {
+        return res.render('404', { messageError: 'Post not found', title: '' });
+      }
 
-            let { name, message } = req.body;
-            name = name.trim();
-            message = message.replace(/^"|"$/g, '').trim(); 
+      let { name, message } = req.body;
+      name = name.trim();
+      message = message.replace(/^"|"$/g, '').trim();
 
-            
-            // Validate name and message fields length
-            if (name.length > 15|| message.length > 40) {
-                return res.render('editPost', {
-                    messageError: 'The name field must be no longer than 15 characters and the message field must to be no longer than 40  characters',
-                    feedId: feedId,
-                    name: name,
-                    message: message,
-                    messageSuccess: '',
-                    messageDelete: '',
-                    title: 'Edit Post Form',
-                    feed: post,
-                });
-            }
+      // Validate name and message fields length
+      if (name.length > 15 || message.length > 40) {
+        return res.render('editPost', {
+          messageError:
+            'The name field must be no longer than 15 characters and the message field must to be no longer than 40  characters',
+          feedId: feedId,
+          name: name,
+          message: message,
+          title: 'Edit Post Form',
+          feed: post,
+        });
+      }
 
-            // Check if the user didn't make any changes to the inputs
-            if (name === post.name && message === post.message) {
-                return res.render('editPost', {
-                    messageError: 'No changes made to the post!',
-                    feedId: feedId,
-                    name: name,
-                    message: message,
-                    messageSuccess: '',
-                    messageDelete: '',
-                    title: 'Edit Post Form',
-                    feed: post,
-                });
-            }
+      // Check if the user didn't make any changes to the inputs
+      if (name === post.name && message === post.message) {
+        return res.render('editPost', {
+          messageError: 'No changes made to the post!',
+          feedId: feedId,
+          name: name,
+          message: message,
+          title: 'Edit Post Form',
+          feed: post,
+        });
+      }
 
-            // Check if fields are empty
-            if (!name || !message) {
-                return res.render('editPost', {
-                    messageError: 'All fields are required! Please fill them in!',
-                    feedId: feedId,
-                    name: name,
-                    message: message,
-                    messageSuccess: '',
-                    messageDelete: '',
-                    title: 'Edit Post Form',
-                    feed: post,
-                });
-            }
+      // Check if fields are empty
+      if (!name || !message) {
+        return res.render('editPost', {
+          messageError: 'All fields are required! Please fill them in!',
+          feedId: feedId,
+          name: name,
+          message: message,
+          title: 'Edit Post Form',
+          feed: post,
+        });
+      }
 
-            // Update the post in the database
-            feedModel
-                .findByIdAndUpdate(feedId, { name: name, message: message }, { new: true })
-                .then((updatedPost) => {
-                    if (!updatedPost) {
-                        return res.render('404', { messageError: 'Post not found', title: '' });
-                    }
-                    return res.redirect(`/feed/${updatedPost._id}`);
-                })
-                .catch((err) => {
-                    console.log(err);
-                    return res.render('editPost', {
-                        messageError: 'Error updating post. Please try again!',
-                        feedId: feedId,
-                        name: name,
-                        message: message,
-                        title: 'Edit Post Form',
-                    });
-                });
+      // Update the post in the database
+      feedModel
+        .findByIdAndUpdate(
+          feedId,
+          { name: name, message: message },
+          { new: true }
+        )
+        .then((updatedPost) => {
+          if (!updatedPost) {
+            return res.render('404', {
+              messageError: 'Post not found',
+              title: '',
+            });
+          }
+          return res.redirect(`/feed/${updatedPost._id}`);
         })
         .catch((err) => {
-            console.log(err);
-            return res.render('404', { messageError: 'Post not found', title: '' });
+          console.log(err);
+          return res.render('editPost', {
+            messageError: 'Error updating post. Please try again!',
+            feedId: feedId,
+            name: name,
+            message: message,
+            title: 'Edit Post Form',
+          });
         });
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.render('404', { messageError: 'Post not found', title: '' });
+    });
 };
-
 
 const deletePost = (req, res) => {
   const feedId = req.params.feedId;
@@ -309,10 +265,9 @@ const deletePost = (req, res) => {
     })
     .catch((err) => {
       console.error('Error deleting post:', err);
-      res.status(500).render('404', {
+      res.status(401).render('404', {
         messageError: 'Server error while deleting post',
         title: '404',
-        messageErr: '',
       });
     });
 };
